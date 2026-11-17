@@ -1,8 +1,8 @@
 set nocompatible
 
 " Load up pathogen, using an alternative folder.
-source ~/ivim/pathogen/autoload/pathogen.vim
-execute pathogen#infect('~/ivim/{}')
+source ~/.ivim/pathogen/autoload/pathogen.vim
+execute pathogen#infect('~/.ivim/{}')
 
 syntax on
 filetype plugin indent on
@@ -51,7 +51,7 @@ set undofile
 " colorscheme afterglow
 set background=dark
 colorscheme scheakur
-ifont iosevka-fixed-ss04-extended 18
+"ifont iosevka-fixed-ss04-extended 18
 
 let mapleader=","
 let maplocalleader=","
@@ -159,3 +159,6 @@ nmap <c-s> :w<cr>
 
 
 " vim: fdm=marker
+
+set mouse=
+
