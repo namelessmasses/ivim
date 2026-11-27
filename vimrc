@@ -22,7 +22,7 @@ set linebreak
 set listchars=tab:\ \ ,trail:·
 set list
 set lazyredraw
-set background=dark
+" set background=dark
 set hidden
 set conceallevel=2 concealcursor=
 set splitright
@@ -49,8 +49,9 @@ set undofile
 " colorscheme seoul
 " colorscheme abstract
 " colorscheme afterglow
-set background=dark
 " colorscheme scheakur
+" colorscheme darkblue
+colorscheme onedark
 "ifont iosevka-fixed-ss04-extended 18
 
 let mapleader=","
