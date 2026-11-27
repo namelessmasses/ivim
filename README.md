@@ -18,6 +18,14 @@ Here’s where another fabulous iPad app steps in: [Working Copy][workingcopy], 
 5. Exit iVim and restart it. If all has gone well, all of the plugins will be available.
 6. Make any configuration changes to this `vimrc` and *not in your actual `.vimrc`* in the home folder. Any changes will be synced to Working Copy, and you can commit and push them to your git repo.
 
+## Markdown preview
+
+In a Markdown buffer, press `,p` in Normal mode or run `:PreviewMarkdown`.
+
+- **iVim:** Uses the built-in `:ipreview`. See `:help :ipreview` for options and `:help :ipreview-update` for refreshing an open preview.
+- **Desktop Vim:** Uses [Previm][previm] to open a rendered local page in your default browser. The page updates when you save; use `:PrevimRefresh` to preview unsaved edits in the open page. If Previm is missing, run `git submodule update --init previm` from this checkout and restart Vim. The Markdown renderer comes bundled with the plugin.
+
+If Safari stalls on “Loading…”, set `let g:previm_open_cmd = 'open -a "Google Chrome"'` in your local `.vimrc` before sourcing this configuration, or substitute another installed browser.
 
 ## Modifying and updating your plugins
 
@@ -59,5 +67,6 @@ Raise an issue if you have questions.
 [workingcopy]: https://workingcopyapp.com
 [texpad]: https://www.texpad.com
 [pathogen]: https://github.com/tpope/vim-pathogen
+[previm]: https://github.com/previm/previm
 [rmmod]: https://stackoverflow.com/questions/1260748/how-do-i-remove-a-submodule/1260982#1260982
 

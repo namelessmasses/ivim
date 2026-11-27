@@ -1,8 +1,16 @@
 set nocompatible
 
-" Load up pathogen, using an alternative folder.
-source ~/.ivim/pathogen/autoload/pathogen.vim
-execute pathogen#infect('~/.ivim/{}')
+" Load the plugins next to this vimrc, wherever the checkout is synced.
+let s:config_dir = fnamemodify(resolve(expand('<sfile>:p')), ':h')
+let s:is_ivim = has('ios') || exists(':ipreview') == 2
+if s:is_ivim
+  let g:pathogen_blacklist = get(g:, 'pathogen_blacklist', get(g:, 'pathogen_disabled', []))
+  if index(g:pathogen_blacklist, 'previm') == -1
+    let g:pathogen_blacklist = g:pathogen_blacklist + ['previm']
+  endif
+endif
+execute 'source ' . fnameescape(s:config_dir . '/pathogen/autoload/pathogen.vim')
+execute pathogen#infect(s:config_dir . '/{}')
 
 syntax on
 filetype plugin indent on
@@ -111,6 +119,44 @@ function! Prose()
   set conceallevel=2 concealcursor=i
 
 endfunction "
+
+" Markdown preview ------------------------------
+if !s:is_ivim
+  let g:previm_custom_preview_base_dir = get(g:, 'previm_custom_preview_base_dir', tempname())
+  if !exists('g:previm_open_cmd')
+    if has('win32')
+      let g:previm_open_cmd = 'start ""'
+    elseif has('macunix')
+      let g:previm_open_cmd = 'open'
+    elseif executable('xdg-open')
+      let g:previm_open_cmd = 'xdg-open'
+    endif
+  endif
+endif
+
+function! s:PreviewMarkdown() abort
+  if exists(':ipreview') == 2
+    ipreview
+  elseif s:is_ivim
+    echomsg 'Markdown preview requires an iVim version with :ipreview.'
+  elseif exists(':PrevimOpen') == 2
+    PrevimOpen
+  else
+    echomsg 'Markdown preview requires Previm. Run git submodule update --init previm from the config checkout and restart Vim.'
+  endif
+endfunction
+
+function! s:SetupMarkdownPreview() abort
+  command! -buffer PreviewMarkdown call <SID>PreviewMarkdown()
+  nnoremap <buffer> <silent> <leader>p :<C-u>PreviewMarkdown<CR>
+  let l:undo = 'silent! delcommand -buffer PreviewMarkdown | silent! nunmap <buffer> <leader>p'
+  let b:undo_ftplugin = exists('b:undo_ftplugin') ? b:undo_ftplugin . ' | ' . l:undo : l:undo
+endfunction
+
+augroup markdown_preview
+  autocmd!
+  autocmd FileType markdown,mkd call s:SetupMarkdownPreview()
+augroup END
 
 " File Types ------------------
 " automatically initialize buffer by file type
